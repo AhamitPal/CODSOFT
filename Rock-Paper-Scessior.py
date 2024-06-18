@@ -2,37 +2,47 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 
-def winner(user_choice):
-    options=["Rock","Paper","Scissor"]
-    computer_choice=random.choice(options)
-    result=""
-    if user_choice==computer_choice:
-        result="Tie"
-    elif (user_choice=="Rock" and computer_choice=="Scissor") or (user_choice=="Paper" and computer_choice=="Rock") or (user_choice=="Scissor" and computer_choice=="Paper"):
-        result="You Win!"
+
+def determine_winner(player_choice):
+    choices = ['Rock', 'Paper', 'Scissors']
+    computer_choice = random.choice(choices)
+    result = ""
+
+    if player_choice == computer_choice:
+        result = "It's a Tie!"
+    elif (player_choice == "Rock" and computer_choice == "Scissors") or \
+         (player_choice == "Paper" and computer_choice == "Rock") or \
+         (player_choice == "Scissors" and computer_choice == "Paper"):
+        result = "You Win!"
     else:
-        result="You Lose!"
+        result = "You Lose!"
+    
+    result_label.config(text=f"Computer chose: {computer_choice}\n{result}")
+    play_again_button.pack()
 
-    messagebox.showinfo("Result",f"Your choice:{user_choice}\n Computer's choice:{computer_choice}\n\n {result}")
+def play_again():
+    result_label.config(text="")
+    play_again_button.pack_forget()
 
-def on_button_click(choice):
-    winner(choice)
 
-root=tk.Tk()
+root = tk.Tk()
+root.title("Rock-Paper-Scissors")
+root.geometry("400x300")
 
-root.title("Rock, Paper, Scissor Game")
 
-rock_button=tk.Button(root,text="Rock",command=lambda:on_button_click("Rock"), width=60, height=2, bg='red')
+tk.Label(root, text="Choose Rock, Paper, or Scissors", font=("Arial", 16)).pack(pady=20)
 
-paper_button=tk.Button(root,text="Paper",command=lambda:on_button_click("Paper"), width=60, height=2,bg='green')
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
 
-scissor_button=tk.Button(root,text="Scissor",command=lambda:on_button_click("Scissor"), width=60, height=2,bg='blue')
+tk.Button(button_frame, text="Rock", font=("Arial", 14),bg='Orange', command=lambda: determine_winner("Rock")).grid(row=0, column=0, padx=10)
+tk.Button(button_frame, text="Paper", font=("Arial", 14),bg='orange', command=lambda: determine_winner("Paper")).grid(row=0, column=1, padx=10)
+tk.Button(button_frame, text="Scissors", font=("Arial", 14),bg='orange', command=lambda: determine_winner("Scissors")).grid(row=0, column=2, padx=10)
 
-rock_button.pack(pady=10)
-paper_button.pack(pady=10)
-scissor_button.pack(pady=10)
+result_label = tk.Label(root, text="", font=("Arial", 16))
+result_label.pack(pady=20)
+
+play_again_button = tk.Button(root, text="Play Again", font=("Arial", 14),bg='Lightblue', command=play_again)
+
 
 root.mainloop()
-
-
-                        
